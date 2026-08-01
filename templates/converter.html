@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Արտարժույթի Փոխարկիչ</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        h1 { color: #2d3436; margin-bottom: 25px; font-size: 24px; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; margin-bottom: 8px; color: #636e72; font-weight: 600; font-size: 14px; }
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            outline: none;
+            font-size: 16px;
+            background: #fff;
+        }
+        input:focus, select:focus { border-color: #00b09b; }
+        .row { display: flex; gap: 15px; }
+        .row .form-group { flex: 1; }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            background: #00b09b;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+        button:hover { background: #00897b; }
+        .result-box {
+            margin-top: 25px;
+            background: #f1f2f6;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #2d3436;
+        }
+        .error-msg { background: #ff7675; color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>💱 Արտարժույթի Փոխարկիչ</h1>
+
+    {% if error %}
+        <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        <div class="form-group">
+            <label>Գումարի չափը</label>
+            <input type="number" step="any" name="amount" value="{{ amount }}" required>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+            <label>Ինչից</label>
+                <select name="from_curr">
+                    {% for cur in currencies %}
+                        <option value="{{ cur }}" {% if cur == from_curr %}selected{% endif %}>{{ cur }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Ինչի</label>
+                <select name="to_curr">
+                    {% for cur in currencies %}
+                        <option value="{{ cur }}" {% if cur == to_curr %}selected{% endif %}>{{ cur }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <button type="submit">Փոխարկել</button>
+    </form>
+
+    {% if result is not none %}
+        <div class="result-box">
+            {{ amount }} {{ from_curr }} = {{ result }} {{ to_curr }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
